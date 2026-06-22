@@ -9,7 +9,7 @@
 - 軸には，縦軸「力(kN)」，横軸「たわみ(m)」のラベルが付いている．
 - 図の右上に凡例が入っている．
 
-![前半で作成したグラフがここに入る](force.png)
+![](force.png)
 
 ## 2. 関数のプロット
 
@@ -25,8 +25,21 @@
 
 ```gnuplot {cmd=true output="html"}
 set terminal svg
+set xrange [0:7]
+set yrange [-20:15]
 
+set grid
+
+set title "関数のプロット"
+set xlabel "x"
+set ylabel "y"
+f1(x)=2*x**2*sqrt(x)-5*x**2
+f2(x)=x/log(x)
+
+plot f1(x) title "f1(x)", \
+     f2(x) title "f2(x)"
 ```
+
 
 ## 3. 八王子の気温
 
@@ -34,7 +47,7 @@ set terminal svg
 
 - データは `weather2026.csv` から取り出す
   - CSV である (データが 「 , 」で区切られている)ことに注意
-- データとして1列目をx軸，2から4列目をy軸に指定し，
+``- データとして1列目をx軸，2から4列目をy軸に指定し，
 折れ線グラフにし，凡例を付ける
 - グラフのタイトル，x軸のラベル，y軸のラベルを付ける
 - 格子状の補助線を入れる
@@ -46,7 +59,19 @@ set terminal svg
 set xdata time
 set timefmt '%Y/%m/%d'
 set xtics format "%m/%d"
+set datafile separator ","
 
+set title "八王子の気温(過去1年間)"
+set xlabel "日付"
+set ylabel "気温(℃)"
+
+set grid
+
+plot \
+"weather2026.csv" using 1:2 with lines title "最高気温", \
+"weather2026.csv" using 1:3 with lines title "最高気温(平年)", \
+"weather2026.csv" using 1:4 with lines title "最低気温", \
+"weather2026.csv" using 1:5 with lines title "最低気温(平年)"
 ```
 
 ## 4． 誕生月
@@ -66,6 +91,17 @@ set xtics format "%m/%d"
 ```gnuplot {cmd=true, output="html"}
 set terminal svg
 unset key
+set title "誕生日の月別人数"
 
+set xlabel "誕生月"
+set ylabel "人数"
 
+set yrange [0:18]
+
+set boxwidth 0.6
+set style fill solid
+
+set grid
+
+plot "bm.txt" using 2:xtic(1) with boxes lc rgb "skyblue"
 ```
